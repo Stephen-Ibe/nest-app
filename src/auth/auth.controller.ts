@@ -22,14 +22,14 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @Post('local/signup')
+  @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   signupLocal(@Body() payload: AuthDto): Promise<Tokens> {
     return this.authService.signupLocal(payload);
   }
 
   @Public()
-  @Post('local/signin')
+  @Post('signin')
   @HttpCode(HttpStatus.OK)
   signinLocal(@Body() payload: AuthDto): Promise<Tokens> {
     return this.authService.signinLocal(payload);
@@ -38,7 +38,7 @@ export class AuthController {
   @UseGuards(AtGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@GetCurrentUserId() userId: number) {
+  logout(@GetCurrentUserId() userId: number): Promise<boolean> {
     return this.authService.logout(userId);
   }
 
