@@ -6,7 +6,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AtGuard, GetCurrentUser, GetCurrentUserId, RtGuard } from 'src/common';
+import {
+  AtGuard,
+  GetCurrentUser,
+  GetCurrentUserId,
+  Public,
+  RtGuard,
+} from 'src/common';
 import { Tokens } from 'src/types';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
@@ -15,12 +21,14 @@ import { AuthDto } from './dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
   signupLocal(@Body() payload: AuthDto): Promise<Tokens> {
     return this.authService.signupLocal(payload);
   }
 
+  @Public()
   @Post('local/signin')
   @HttpCode(HttpStatus.OK)
   signinLocal(@Body() payload: AuthDto): Promise<Tokens> {
