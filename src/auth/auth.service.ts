@@ -17,7 +17,7 @@ export class AuthService {
    * @param {any} payload:AuthDto
    * @returns {any}
    */
-  async signupLocal(payload: AuthDto): Promise<Tokens> {
+  async signup(payload: AuthDto): Promise<Tokens> {
     const hash = await this.hashData(payload.password);
     const newUser = await this.prismaService.user.create({
       data: {
@@ -36,7 +36,7 @@ export class AuthService {
    * @param {any} payload:AuthDto
    * @returns {any}
    */
-  async signinLocal(payload: AuthDto): Promise<Tokens> {
+  async signin(payload: AuthDto): Promise<Tokens> {
     const user = await this.prismaService.user.findUnique({
       where: {
         email: payload.email,
@@ -79,7 +79,7 @@ export class AuthService {
         id: userId,
       },
     });
-    if (!user) throw new ForbiddenException('Access Denied');
+    if (!user || !user.hashedRt) throw new ForbiddenException('Access Denied');
 
     const refreshTokensMatch = await bcrypt.compare(
       refreshToken,

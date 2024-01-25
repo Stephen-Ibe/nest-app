@@ -24,15 +24,15 @@ export class AuthController {
   @Public()
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  signupLocal(@Body() payload: AuthDto): Promise<Tokens> {
-    return this.authService.signupLocal(payload);
+  signup(@Body() payload: AuthDto): Promise<Tokens> {
+    return this.authService.signup(payload);
   }
 
   @Public()
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  signinLocal(@Body() payload: AuthDto): Promise<Tokens> {
-    return this.authService.signinLocal(payload);
+  signin(@Body() payload: AuthDto): Promise<Tokens> {
+    return this.authService.signin(payload);
   }
 
   @UseGuards(AtGuard)
@@ -49,7 +49,7 @@ export class AuthController {
   refreshToken(
     @GetCurrentUserId() userId: number,
     @GetCurrentUser('refreshToken') refreshToken: string,
-  ) {
+  ): Promise<Tokens> {
     return this.authService.refreshToken(userId, refreshToken);
   }
 }
